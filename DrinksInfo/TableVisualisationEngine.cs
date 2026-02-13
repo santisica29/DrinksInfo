@@ -13,7 +13,8 @@ internal class TableVisualisationEngine
         ConsoleTableBuilder
             .From(tableData)
             .WithColumn(tableName)
-            .ExportAndWriteLine();
+            .WithFormat(ConsoleTableBuilderFormat.MarkDown)
+            .ExportAndWriteLine(TableAligntment.Center);
 
         Console.WriteLine("\n\n");
 

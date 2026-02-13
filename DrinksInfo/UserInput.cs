@@ -19,7 +19,7 @@ internal class UserInput
             category = Console.ReadLine();
         }
 
-        if (!categories.Any(x => String.Equals(x.StrCategory, category, StringComparison.InvariantCultureIgnoreCase)))
+        if (!categories.Any(x => String.Equals(x.StrCategory, category, StringComparison.OrdinalIgnoreCase)))
         {
             Console.WriteLine("Category doesn't exist");
             GetCategoriesInput();
@@ -57,5 +57,9 @@ internal class UserInput
         }
 
         drinksService.GetDrink(drink);
+
+        Console.WriteLine("Press any key to go back to categories menu.");
+        Console.ReadKey();
+        if (!Console.KeyAvailable) GetCategoriesInput();
     }
 }
