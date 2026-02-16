@@ -6,30 +6,45 @@ internal class UserInput
 {
     DrinksService drinksService = new();
 
-    internal void GetCategoriesInput()
+    internal async void GetCategoriesInput()
     {
-        var categories = drinksService.GetCategories();
-
-        Console.WriteLine("Choose a category:");
-        string category = Console.ReadLine();  
-
-        while (!Validator.IsStringValid(category))
+        try
         {
-            Console.WriteLine("\nInvalid category");
-            category = Console.ReadLine();
-        }
+            var categories = await drinksService.GetCategories();
 
-        if (!categories.Any(x => String.Equals(x.StrCategory, category, StringComparison.OrdinalIgnoreCase)))
+            var table = new Table();
+            table.AddColumn("Category");
+
+            foreach (var c in categories)
+            {
+                table.AddRow(c.CategoryName);
+            }
+
+            Console.WriteLine("Choose a category:");
+            string category = Console.ReadLine();
+
+            while (!Validator.IsStringValid(category))
+            {
+                Console.WriteLine("\nInvalid category");
+                category = Console.ReadLine();
+            }
+
+            if (!categories.Any(x => String.Equals(x.CategoryName, category, StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine("Category doesn't exist");
+                GetCategoriesInput();
+                return;
+            }
+
+            GetDrinksInput(category);
+        }
+        catch (Exception ex)
         {
-            Console.WriteLine("Category doesn't exist");
-            GetCategoriesInput();
-            return;
+            AnsiConsole.MarkupLine($"[red]Error: {ex}[/]");
         }
-
-        GetDrinksInput(category);
     }
 
-    private void GetDrinksInput(string? category)
+    internal async void GetDrinksInput(string? category)
     {
         var drinks = drinksService.GetDrinksByCategory(category);
 
@@ -56,7 +71,9 @@ internal class UserInput
             return;
         }
 
-        drinksService.GetDrink(drink);
+        var drinkList = await drinksService.GetDrink(drink);
+
+        Console.WriteLine(drinkList.ToString());
 
         Console.WriteLine("Press any key to go back to categories menu.");
         Console.ReadKey();

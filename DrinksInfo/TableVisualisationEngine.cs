@@ -1,5 +1,4 @@
 ﻿using ConsoleTableExt;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DrinksInfo;
 internal class TableVisualisationEngine

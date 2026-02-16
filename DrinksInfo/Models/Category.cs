@@ -1,13 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace DrinksInfo.Models;
 internal class Category
 {
-    public string StrCategory {  get; set; }
+    [JsonPropertyName("strCategory")]
+    public string CategoryName {  get; set; }
 }
 
 internal class Categories
 {
-    [JsonProperty("drinks")]
+    [JsonPropertyName("drinks")]
     public List<Category> CategoriesList { get; set; }
 }
