@@ -6,7 +6,7 @@ internal class UserInput
 {
     DrinksService drinksService = new();
 
-    internal async void GetCategoriesInput()
+    internal async Task GetCategoriesInput()
     {
         try
         {
@@ -20,6 +20,8 @@ internal class UserInput
                 table.AddRow(c.CategoryName);
             }
 
+            AnsiConsole.Write(table);
+            
             Console.WriteLine("Choose a category:");
             string category = Console.ReadLine();
 
@@ -32,11 +34,11 @@ internal class UserInput
             if (!categories.Any(x => String.Equals(x.CategoryName, category, StringComparison.OrdinalIgnoreCase)))
             {
                 Console.WriteLine("Category doesn't exist");
-                GetCategoriesInput();
+                await GetCategoriesInput();
                 return;
             }
 
-            GetDrinksInput(category);
+            await GetDrinksInput(category);
         }
         catch (Exception ex)
         {
@@ -44,39 +46,64 @@ internal class UserInput
         }
     }
 
-    internal async void GetDrinksInput(string? category)
+    internal async Task GetDrinksInput(string? category)
     {
-        var drinks = drinksService.GetDrinksByCategory(category);
-
-        Console.WriteLine("Choose a drink by typing it's id or go back to category menu by typing 0:");
-        string drink = Console.ReadLine();
-
-        if (drink == "0")
+        try
         {
-            GetCategoriesInput();
-            return;
-        }
+            var drinks = await drinksService.GetDrinksByCategory(category);
 
-        while (!Validator.IsIdValid(drink))
-        {
-            Console.WriteLine("\nInvalid drink");
-            drink = Console.ReadLine();
-        }
+            if (drinks == null)
+            {
+                Console.WriteLine("No drinks");
+                Console.ReadKey();
+                return;
+            }
 
-        if (!drinks.Any(x => x.IdDrink == drink))
-        {
-            Console.WriteLine("Category doesn't exist. Press any key to try again.");
+            var table = new Table();
+            table.AddColumn("Id");
+            table.AddColumn("Name");
+
+            foreach (var d in drinks)
+            {
+                table.AddRow(d.IdDrink, d.StrDrink);
+            }
+
+            AnsiConsole.Write(table);
+
+            Console.WriteLine("Choose a drink by typing it's id or go back to category menu by typing 0:");
+            string drink = Console.ReadLine();
+
+            if (drink == "0")
+            {
+                GetCategoriesInput();
+                return;
+            }
+
+            while (!Validator.IsIdValid(drink))
+            {
+                Console.WriteLine("\nInvalid drink");
+                drink = Console.ReadLine();
+            }
+
+            if (!drinks.Any(x => x.IdDrink == drink))
+            {
+                Console.WriteLine("Category doesn't exist. Press any key to try again.");
+                Console.ReadKey();
+                GetDrinksInput(category);
+                return;
+            }
+
+            var drinkList = await drinksService.GetDrink(drink);
+
+            Console.WriteLine(drinkList.ToString());
+
+            Console.WriteLine("Press any key to go back to categories menu.");
             Console.ReadKey();
-            GetDrinksInput(category); 
-            return;
+            if (!Console.KeyAvailable) GetCategoriesInput();
         }
-
-        var drinkList = await drinksService.GetDrink(drink);
-
-        Console.WriteLine(drinkList.ToString());
-
-        Console.WriteLine("Press any key to go back to categories menu.");
-        Console.ReadKey();
-        if (!Console.KeyAvailable) GetCategoriesInput();
+        catch (Exception ex)
+        {
+            AnsiConsole.MarkupLine($"[red]Error: {ex}[/]");
+        }
     }
 }

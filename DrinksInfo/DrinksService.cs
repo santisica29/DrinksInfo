@@ -1,9 +1,6 @@
 ﻿using DrinksInfo.Models;
-using RestSharp;
-using System.Reflection;
 using System.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace DrinksInfo;
 internal class DrinksService
@@ -11,7 +8,7 @@ internal class DrinksService
     private static readonly HttpClient _client = new();
     internal async Task<List<Category>> GetCategories()
     {
-        var url = "http://www.thecocktaildb.com/api/json/v1/1/list.php?c=list";
+        string url = "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list";
 
         HttpResponseMessage response = await _client.GetAsync(url);
 
@@ -28,7 +25,7 @@ internal class DrinksService
 
     internal async Task<DrinkDetail?> GetDrink(string? drink)
     {
-        var url = ($"http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i={drink}");
+        var url = $"http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i={drink}";
 
         HttpResponseMessage response = await _client.GetAsync(url);
 
@@ -67,23 +64,19 @@ internal class DrinksService
 
     }
 
-    internal List<Drink> GetDrinksByCategory(string? category)
+    internal async Task<List<Drink>> GetDrinksByCategory(string? category)
     {
-        var client = new RestClient("http://www.thecocktaildb.com/api/json/v1/1/");
-        var request = new RestRequest($"filter.php?c={HttpUtility.UrlEncode(category)}");
-        var response = client.ExecuteAsync(request);
+        var url = $"https://www.thecocktaildb.com/api/json/v1/1/filter.php?c={HttpUtility.UrlEncode(category)}";
 
-        List<Drink> drinks = new();
+        HttpResponseMessage response = await _client.GetAsync(url);
 
-        if (response.Result.StatusCode == System.Net.HttpStatusCode.OK)
-        {
-            string rawResponse = response.Result.Content;
-            var serialize = JsonConvert.DeserializeObject<Drinks>(rawResponse);
+        response.EnsureSuccessStatusCode();
 
-            drinks = serialize.DrinksList;
-            TableVisualisationEngine.ShowTable(drinks, "Categories Menu");
-            return drinks;
-        }
+        var json = await response.Content.ReadAsStringAsync();
+
+        Drinks result = JsonSerializer.Deserialize<Drinks>(json);
+
+        List<Drink> drinks = result.DrinksList;
 
         return drinks;
     }

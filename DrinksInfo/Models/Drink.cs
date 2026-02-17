@@ -1,15 +1,17 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace DrinksInfo.Models;
 internal class Drink
 {
+    [JsonPropertyName("idDrink")]
     public string IdDrink { get; set; }
+
+    [JsonPropertyName("strDrink")]
     public string StrDrink { get; set; }
 }
 
 internal class Drinks
 {
-    [JsonProperty("drinks")]
+    [JsonPropertyName("drinks")]
     public List<Drink> DrinksList { get; set; }
 }
