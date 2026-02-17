@@ -65,27 +65,27 @@ internal class UserInput
 
             foreach (var d in drinks)
             {
-                table.AddRow(d.IdDrink, d.StrDrink);
+                table.AddRow(d.Id, d.Name);
             }
 
             AnsiConsole.Write(table);
 
             Console.WriteLine("Choose a drink by typing it's id or go back to category menu by typing 0:");
-            string drink = Console.ReadLine();
+            string drinkId = Console.ReadLine();
 
-            if (drink == "0")
+            if (drinkId == "0")
             {
                 GetCategoriesInput();
                 return;
             }
 
-            while (!Validator.IsIdValid(drink))
+            while (!Validator.IsIdValid(drinkId))
             {
                 Console.WriteLine("\nInvalid drink");
-                drink = Console.ReadLine();
+                drinkId = Console.ReadLine();
             }
 
-            if (!drinks.Any(x => x.IdDrink == drink))
+            if (!drinks.Any(x => x.Id == drinkId))
             {
                 Console.WriteLine("Category doesn't exist. Press any key to try again.");
                 Console.ReadKey();
@@ -93,13 +93,31 @@ internal class UserInput
                 return;
             }
 
-            var drinkList = await drinksService.GetDrink(drink);
+            var drinkDetail = await drinksService.GetDrink(drinkId);
 
-            Console.WriteLine(drinkList.ToString());
+            var table2 = new Table();
+
+            table2.AddColumn("Category");
+            table2.AddColumn("Name");
+            table2.AddColumn("Instructions");
+            table2.AddColumn("Ingredient 1");
+            table2.AddColumn("Ingredient 2");
+            table2.AddColumn("Ingredient 3");
+            table2.AddColumn("Is alcoholic?");
+            table2.AddRow(
+                drinkDetail.Category, 
+                drinkDetail.Name, 
+                drinkDetail.Instructions,
+                drinkDetail.Ingredient1 ?? "-",
+                drinkDetail.Ingredient2 ?? "-",
+                drinkDetail.Ingredient3 ?? "-",
+                drinkDetail.IsAlcoholic ?? "-");
+
+            AnsiConsole.Write(table2);
 
             Console.WriteLine("Press any key to go back to categories menu.");
             Console.ReadKey();
-            if (!Console.KeyAvailable) GetCategoriesInput();
+            if (!Console.KeyAvailable) await GetCategoriesInput();
         }
         catch (Exception ex)
         {

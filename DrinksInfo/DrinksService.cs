@@ -23,7 +23,7 @@ internal class DrinksService
         return categories ?? new List<Category>();
     }
 
-    internal async Task<DrinkDetail?> GetDrink(string? drink)
+    internal async Task<Drink?> GetDrink(string? drink)
     {
         var url = $"http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i={drink}";
 
@@ -33,38 +33,16 @@ internal class DrinksService
 
         var json = await response.Content.ReadAsStringAsync();
 
-        DrinkDetailObject? result = JsonSerializer.Deserialize<DrinkDetailObject>(json);
+        DrinkDetail? result = JsonSerializer.Deserialize<DrinkDetail>(json);
 
-        List<DrinkDetail> returnedList = result.DrinkDetailList;
+        List<Drink> returnedList = result.DrinkDetailList;
 
-        DrinkDetail? drinkDetail = returnedList.FirstOrDefault();
+        Drink? drinkDetail = returnedList.FirstOrDefault();
 
         return drinkDetail;
-
-        //List<object> prepList = new();
-
-        //string formattedName = String.Empty;
-
-        //foreach (PropertyInfo prop in drinkDetail.GetType().GetProperties())
-        //{
-        //    if (prop.Name.Contains("Str"))
-        //        formattedName = prop.Name.Substring(3);
-
-        //    if (!string.IsNullOrEmpty(prop.GetValue(drinkDetail)?.ToString()))
-        //    {
-        //        prepList.Add(new
-        //        {
-        //            Key = formattedName,
-        //            Value = prop.GetValue(drinkDetail)
-        //        });
-        //    }
-        //}
-
-        //TableVisualisationEngine.ShowTable(prepList, drinkDetail.StrDrink);
-
     }
 
-    internal async Task<List<Drink>> GetDrinksByCategory(string? category)
+    internal async Task<List<DrinkFromCategory>> GetDrinksByCategory(string? category)
     {
         var url = $"https://www.thecocktaildb.com/api/json/v1/1/filter.php?c={HttpUtility.UrlEncode(category)}";
 
@@ -74,9 +52,9 @@ internal class DrinksService
 
         var json = await response.Content.ReadAsStringAsync();
 
-        Drinks result = JsonSerializer.Deserialize<Drinks>(json);
+        DrinksFromCategory result = JsonSerializer.Deserialize<DrinksFromCategory>(json);
 
-        List<Drink> drinks = result.DrinksList;
+        List<DrinkFromCategory> drinks = result.DrinksList;
 
         return drinks;
     }

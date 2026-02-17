@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace DrinksInfo.Models;
-internal class DrinkDetail
+internal class Drink
 {
     [JsonPropertyName("strDrink")]
     public string? Name { get; set; }
@@ -9,16 +9,25 @@ internal class DrinkDetail
     [JsonPropertyName("strCategory")]
     public string? Category { get; set; }
 
-    [JsonPropertyName("strAcloholic")]
-    public string? StrAlcoholic { get; set; }
-    public string? StrInstructions { get; set; }
-    public string? StrInstructionsES { get; set; }
-    public string? StrDrinkThumb { get; set; }
-    public string? StrImageSource { get; set; }
+    [JsonPropertyName("strAlcoholic")]
+    public string? IsAlcoholic { get; set; }
+
+    [JsonPropertyName("strInstructions")]
+    public string? Instructions { get; set; }
+
+    [JsonPropertyName("strIngredient1")]
+    public string? Ingredient1 { get; set; }
+
+    [JsonPropertyName("strIngredient2")]
+    public string? Ingredient2 { get; set; }
+
+    [JsonPropertyName("strIngredient3")]
+    public string? Ingredient3 { get; set; }
+
 }
 
-internal class DrinkDetailObject
+internal class DrinkDetail
 {
     [JsonPropertyName("drinks")]
-    public List<DrinkDetail> DrinkDetailList { get; set; }
+    public List<Drink> DrinkDetailList { get; set; }
 }
