@@ -37,7 +37,7 @@ internal class UserInput
                     break;
                 case "0":
                     appRunning = false;
-                    break;
+                    return;
             }
         }
     }
@@ -100,12 +100,12 @@ internal class UserInput
 
             TableVisualisation.PrintDrinkFromCategories(drinks);
 
-            Console.WriteLine("Choose a drink by typing it's id or go back to category menu by typing 0:");
+            Console.WriteLine("Choose a drink by typing it's id or go back to main menu by typing 0:");
             string drinkId = Console.ReadLine();
 
             if (drinkId == "0")
             {
-                GetCategoriesInput();
+                await MainMenu();
                 return;
             }
 
