@@ -4,6 +4,8 @@ Console App Project to learn how to consume and API with C# and save data from t
 
 ## Requirements
 
+- Use the cocktail API to retrieve information about drinks
+
 - You were hired by restaurant to create a solution for their drinks menu.
 
 - Their drinks menu is provided by an external company. All the data about the drinks is in the companies database, accessible through an API.
