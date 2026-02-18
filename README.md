@@ -34,6 +34,6 @@ Console App Project to learn how to consume and API with C# and save data from t
 
 ## Resources
 
-(https://www.thecocktaildb.com/api.php)[Cocktail API website]
-(https://learn.microsoft.com/en-us/dotnet/csharp/tutorials/console-webapiclient)[HTTP request tutorial]
-(https://www.thecsharpacademy.com/project/15/drinks)[Project idea from The C# Academy]
+[Cocktail API website](https://www.thecocktaildb.com/api.php)
+[HTTP request tutorial](https://learn.microsoft.com/en-us/dotnet/csharp/tutorials/console-webapiclient)
+[Project idea from The C# Academy](https://www.thecsharpacademy.com/project/15/drinks)
