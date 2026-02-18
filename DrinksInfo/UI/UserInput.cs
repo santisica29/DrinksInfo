@@ -119,7 +119,7 @@ internal class UserInput
             {
                 Console.WriteLine("Category doesn't exist. Press any key to try again.");
                 Console.ReadKey();
-                GetDrinksInput(category);
+                await GetDrinksInput(category);
                 return;
             }
 
