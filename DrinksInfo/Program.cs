@@ -1,10 +1,16 @@
-﻿namespace DrinksInfo;
+﻿using DrinksInfo.Services;
+using DrinksInfo.UI;
+
+namespace DrinksInfo;
 
 internal class Program
 {
     static async Task Main(string[] args)
     {
         UserInput userInput = new();
-        await userInput.GetCategoriesInput();
+        DatabaseManager databaseManager = new();
+
+        databaseManager.Initialize();
+        await userInput.MainMenu();
     }
 }

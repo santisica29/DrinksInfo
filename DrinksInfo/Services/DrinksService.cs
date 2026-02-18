@@ -2,7 +2,7 @@
 using System.Web;
 using System.Text.Json;
 
-namespace DrinksInfo;
+namespace DrinksInfo.Services;
 internal class DrinksService
 {
     private static readonly HttpClient _client = new();
@@ -23,9 +23,9 @@ internal class DrinksService
         return categories ?? new List<Category>();
     }
 
-    internal async Task<Drink?> GetDrink(string? drink)
+    internal async Task<Drink?> GetDrink(string? drinkId)
     {
-        var url = $"http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i={drink}";
+        var url = $"http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i={drinkId}";
 
         HttpResponseMessage response = await _client.GetAsync(url);
 

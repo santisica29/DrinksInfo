@@ -3,17 +3,19 @@
 namespace DrinksInfo.Models;
 internal class Drink
 {
+    [JsonPropertyName("idDrink")]
+    public string DrinkId { get; set; }
     [JsonPropertyName("strDrink")]
-    public string? Name { get; set; }
+    public string? DrinkName { get; set; }
 
     [JsonPropertyName("strCategory")]
-    public string? Category { get; set; }
+    public string? DrinkCategory { get; set; }
 
     [JsonPropertyName("strAlcoholic")]
     public string? IsAlcoholic { get; set; }
 
     [JsonPropertyName("strInstructions")]
-    public string? Instructions { get; set; }
+    public string? DrinkInstructions { get; set; }
 
     [JsonPropertyName("strIngredient1")]
     public string? Ingredient1 { get; set; }
@@ -29,5 +31,5 @@ internal class Drink
 internal class DrinkDetail
 {
     [JsonPropertyName("drinks")]
-    public List<Drink> DrinkDetailList { get; set; }
+    public List<Drink>? DrinkDetailList { get; set; }
 }

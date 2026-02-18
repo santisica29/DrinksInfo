@@ -1,14 +1,13 @@
-﻿
-namespace DrinksInfo;
+﻿namespace DrinksInfo.Validation;
 internal class Validator
 {
     internal static bool IsIdValid(string? input)
     {
-        if (String.IsNullOrEmpty(input)) return false;
+        if (string.IsNullOrEmpty(input)) return false;
 
         foreach (char c in input)
         {
-            if (!Char.IsDigit(c)) return false;
+            if (!char.IsDigit(c)) return false;
         }
 
         return true;
@@ -16,12 +15,12 @@ internal class Validator
 
     internal static bool IsStringValid(string? input)
     {
-        if (String.IsNullOrEmpty(input)) 
+        if (string.IsNullOrEmpty(input)) 
             return false;
 
         foreach (char c in input)
         {
-            if (!Char.IsLetter(c) && c != '/' && c != ' ')
+            if (!char.IsLetter(c) && c != '/' && c != ' ')
                 return false;
         }
 
