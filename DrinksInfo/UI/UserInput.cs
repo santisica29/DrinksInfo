@@ -16,6 +16,8 @@ internal class UserInput
         bool appRunning = true;
         while (appRunning)
         {
+            Console.Clear();
+
             Console.WriteLine("1 - See drinks from cocktail API");
             Console.WriteLine("2 - See your favorite drinks saved in the database");
             Console.WriteLine("0 - Exit");
@@ -44,7 +46,14 @@ internal class UserInput
 
     internal void ShowFavoriteDrinks()
     {
+        Console.Clear();
+
         var list = drinkController.Get();
+
+        if (list == null)
+        {
+            AnsiConsole.MarkupLine("[red]There are not items in the list[/]");
+        }
 
         TableVisualisation.PrintDrinkTable(list);
 
@@ -70,11 +79,12 @@ internal class UserInput
                 category = Console.ReadLine();
             }
 
-            if (!categories.Any(x => string.Equals(x.CategoryName, category, StringComparison.OrdinalIgnoreCase)))
+            while (!categories.Any(x => string.Equals(x.CategoryName, category, StringComparison.OrdinalIgnoreCase)))
             {
-                Console.WriteLine("Category doesn't exist");
-                await GetCategoriesInput();
-                return;
+                AnsiConsole.MarkupLine("[red]Category doesn't exist. Try again[/]");
+
+                Console.WriteLine("Choose a category:");
+                category = Console.ReadLine();
             }
 
             await GetDrinksInput(category);
@@ -89,6 +99,8 @@ internal class UserInput
     {
         try
         {
+            Console.Clear();
+
             var drinks = await drinksService.GetDrinksByCategory(category);
 
             if (drinks == null)
@@ -105,7 +117,6 @@ internal class UserInput
 
             if (drinkId == "0")
             {
-                await MainMenu();
                 return;
             }
 
@@ -130,6 +141,8 @@ internal class UserInput
                 drinkDetail
             };
 
+            Console.Clear();
+
             TableVisualisation.PrintDrinkTable(list);
 
             var saveToDB = AnsiConsole.Confirm("Do you want to save this drink to your favortie drinks list?");
@@ -149,7 +162,7 @@ internal class UserInput
             Console.WriteLine("Press any key to go back to main menu.");
             Console.ReadKey();
 
-            if (!Console.KeyAvailable) await MainMenu();
+            if (!Console.KeyAvailable) return;
         }
         catch (Exception ex)
         {

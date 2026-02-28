@@ -1,6 +1,8 @@
 # DrinksInfo
 
-Console App Project to learn how to consume and API with C# and save data from the API with SQL Server
+Console App Project to learn how to consume and API using HTTP requests with C# and to save data from the API with SQL Server.
+
+It consumes the cocktail API, gets you drinks ranging from different categories, allows you to see the details of how to prepare said drink, if it's alcoholic or not and you could even save it to your favorite drinks database!
 
 ## Requirements
 
@@ -30,9 +32,12 @@ Console App Project to learn how to consume and API with C# and save data from t
 
 - Uses Spectre.Console to show the data in a nicer way using it's table feature.
 
-## Challenges
+## What I've Learned
 
-- using HTTP instead of RestSharp as the tutorial does.
+- How to use HTTP to navigate through the API and retrieve information.
+- More practice with SQL Server.
+- About Json Property Names annotations that allows you to match your column with a different name than the API's object.
+- How the async/await functions work with each other.
 
 ## Resources
 
