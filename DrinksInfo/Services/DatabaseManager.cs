@@ -9,6 +9,7 @@ internal class DatabaseManager
     internal static string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
 
     internal static string serverConnection = ConfigurationManager.ConnectionStrings["ServerConnection"].ConnectionString;
+
     public void Initialize()
     {
         CreateDatabase();
@@ -50,5 +51,19 @@ internal class DatabaseManager
             END";
 
         connection.Execute(sql);
+
+        var vdSql = @"IF OBJECT_ID('dbo.ViewedDrinks', 'U') IS NULL
+            BEGIN
+                CREATE TABLE ViewedDrinks (
+                    DrinkId INT IDENTITY NOT NULL,
+                    DrinkName VARCHAR(25) NOT NULL,
+                    Counter INT NOT NULL,
+
+                    CONSTRAINT PK_ViewedDrink PRIMARY KEY (DrinkId),
+                    CONSTRAINT UQ_ViewedDrinkName UNIQUE (DrinkName)
+                );
+            END";
+
+        connection.Execute(vdSql);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using DrinksInfo.Controllers;
 using DrinksInfo.Models;
 using DrinksInfo.Services;
-using DrinksInfo.Validation;
 using Spectre.Console;
 
 namespace DrinksInfo.UI;
@@ -20,6 +19,7 @@ internal class UserInput
 
             Console.WriteLine("1 - See drinks from cocktail API");
             Console.WriteLine("2 - See your favorite drinks saved in the database");
+            Console.WriteLine("3 - See how many times the drinks have been viewed");
             Console.WriteLine("0 - Exit");
 
             string input = Console.ReadLine();
@@ -37,11 +37,37 @@ internal class UserInput
                 case "2":
                     ShowFavoriteDrinks();
                     break;
+                case "3":
+                    ShowViewedDrinks();
+                    break;
                 case "0":
                     appRunning = false;
                     return;
             }
         }
+    }
+
+    private void ShowViewedDrinks()
+    {
+        var list = drinkController.GetViewedDrinks();
+
+        if (list == null)
+        {
+            AnsiConsole.MarkupLine("[red]no data found[/]");
+            Console.ReadKey();
+            return;
+        }
+
+        var table = new Table();
+        table.AddColumns("Name", "Counter");
+        foreach (var drink in list)
+        {
+            table.AddRow(drink.Drinkname, drink.Counter.ToString());
+        }
+
+        Console.WriteLine("Press any key to go back");
+        Console.ReadKey();
+            
     }
 
     internal void ShowFavoriteDrinks()
@@ -141,6 +167,9 @@ internal class UserInput
             {
                 drinkDetail
             };
+
+            //adds drink to viewed drinks table
+            drinkController.AddViewDrink(drinkDetail.DrinkName);
 
             Console.Clear();
 
