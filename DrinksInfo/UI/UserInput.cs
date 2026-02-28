@@ -9,7 +9,7 @@ namespace DrinksInfo.UI;
 internal class UserInput
 {
     DrinksService drinksService = new();
-    DrinkController drinkController = new();    
+    DrinkController drinkController = new();
 
     internal async Task MainMenu()
     {
@@ -68,26 +68,37 @@ internal class UserInput
 
             var categories = await drinksService.GetCategories();
 
-            TableVisualisation.PrintCategoryTable(categories);
-            
-            Console.WriteLine("Choose a category:");
-            string category = Console.ReadLine();
+            //TableVisualisation.PrintCategoryTable(categories);
 
-            while (!Validator.IsStringValid(category))
-            {
-                Console.WriteLine("\nInvalid category");
-                category = Console.ReadLine();
-            }
+            var category = AnsiConsole.Prompt(new SelectionPrompt<Category>()
+            .Title("Choose a category")
+            .UseConverter(x => x.CategoryName)
+            .AddChoices(categories)
+            );
 
-            while (!categories.Any(x => string.Equals(x.CategoryName, category, StringComparison.OrdinalIgnoreCase)))
+            //while (!Validator.IsStringValid(category.CategoryName))
+            //{
+            //    AnsiConsole.MarkupLine("[red]Invalid input. Try again[/]");
+
+            //    category = AnsiConsole.Prompt(new SelectionPrompt<Category>()
+            //.Title("Choose a category")
+            //.UseConverter(x => x.CategoryName)
+            //.AddChoices(categories)
+            //);
+            //}
+
+            while (!categories.Any(x => string.Equals(x.CategoryName, category.CategoryName, StringComparison.OrdinalIgnoreCase)))
             {
                 AnsiConsole.MarkupLine("[red]Category doesn't exist. Try again[/]");
 
-                Console.WriteLine("Choose a category:");
-                category = Console.ReadLine();
+                category = AnsiConsole.Prompt(new SelectionPrompt<Category>()
+            .Title("Choose a category")
+            .UseConverter(x => x.CategoryName)
+            .AddChoices(categories)
+            );
             }
 
-            await GetDrinksInput(category);
+            await GetDrinksInput(category.CategoryName);
         }
         catch (Exception ex)
         {
@@ -103,15 +114,9 @@ internal class UserInput
 
             var drinks = await drinksService.GetDrinksByCategory(category);
 
-            if (drinks == null)
-            {
-                Console.WriteLine("No drinks");
-                Console.ReadKey();
-                return;
-            }
+            //TableVisualisation.PrintDrinkFromCategories(drinks);
 
-            TableVisualisation.PrintDrinkFromCategories(drinks);
-
+            var drink = AnsiConsole.Prompt(new SelectionPrompt<DrinkFrom>)
             Console.WriteLine("Choose a drink by typing it's id or go back to main menu by typing 0:");
             string drinkId = Console.ReadLine();
 
