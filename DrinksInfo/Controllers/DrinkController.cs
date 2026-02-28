@@ -1,5 +1,4 @@
-﻿using DrinksInfo.DTO;
-using DrinksInfo.Models;
+﻿using DrinksInfo.Models;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 using static Dapper.SqlMapper;
