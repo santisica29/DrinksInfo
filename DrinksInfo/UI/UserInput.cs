@@ -116,22 +116,18 @@ internal class UserInput
 
             //TableVisualisation.PrintDrinkFromCategories(drinks);
 
-            var drink = AnsiConsole.Prompt(new SelectionPrompt<DrinkFrom>)
-            Console.WriteLine("Choose a drink by typing it's id or go back to main menu by typing 0:");
-            string drinkId = Console.ReadLine();
+            var drink = AnsiConsole.Prompt(new SelectionPrompt<DrinkFromCategory>()
+                    .Title("Choose a drink")
+                    .UseConverter(x => x.Name)
+                    .AddChoices(drinks));
 
-            if (drinkId == "0")
-            {
-                return;
-            }
+            //while (!Validator.IsIdValid(drinkId))
+            //{
+            //    Console.WriteLine("\nInvalid drink");
+            //    drinkId = Console.ReadLine();
+            //}
 
-            while (!Validator.IsIdValid(drinkId))
-            {
-                Console.WriteLine("\nInvalid drink");
-                drinkId = Console.ReadLine();
-            }
-
-            if (!drinks.Any(x => x.Id == drinkId))
+            if (!drinks.Any(x => x.Id == drink.Id))
             {
                 Console.WriteLine("Category doesn't exist. Press any key to try again.");
                 Console.ReadKey();
@@ -139,7 +135,7 @@ internal class UserInput
                 return;
             }
 
-            var drinkDetail = await drinksService.GetDrink(drinkId);
+            var drinkDetail = await drinksService.GetDrink(drink.Id);
 
             var list = new List<Drink>()
             {
