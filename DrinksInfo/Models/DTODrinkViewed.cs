@@ -1,17 +1,17 @@
 ﻿namespace DrinksInfo.Models;
 internal class DTODrinkViewed
 {
-    public string Drinkname { get; set; }
-    public int Counter { get; set; }
+    public string DrinkName { get; set; }
+    public int Counter { get; set; } = 0;
 
     public DTODrinkViewed()
     {
 
     }
 
-    public DTODrinkViewed(string drinkname)
+    public DTODrinkViewed(string drinkname, int counter)
     {
-        Drinkname = drinkname;
-        Counter = 0;
+        DrinkName = drinkname;
+        Counter = counter;
     }
 }

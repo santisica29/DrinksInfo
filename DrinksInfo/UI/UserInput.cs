@@ -59,11 +59,14 @@ internal class UserInput
         }
 
         var table = new Table();
+        table.Title("Most viewed drinks");
         table.AddColumns("Name", "Counter");
         foreach (var drink in list)
         {
-            table.AddRow(drink.Drinkname, drink.Counter.ToString());
+            table.AddRow(drink.DrinkName, drink.Counter.ToString());
         }
+
+        AnsiConsole.Write(table);
 
         Console.WriteLine("Press any key to go back");
         Console.ReadKey();

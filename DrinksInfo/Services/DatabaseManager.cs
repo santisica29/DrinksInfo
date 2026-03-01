@@ -56,7 +56,7 @@ internal class DatabaseManager
             BEGIN
                 CREATE TABLE ViewedDrinks (
                     DrinkId INT IDENTITY NOT NULL,
-                    DrinkName VARCHAR(25) NOT NULL,
+                    DrinkName VARCHAR(255) NOT NULL,
                     Counter INT NOT NULL,
 
                     CONSTRAINT PK_ViewedDrink PRIMARY KEY (DrinkId),

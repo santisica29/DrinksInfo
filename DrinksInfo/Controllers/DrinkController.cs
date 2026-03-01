@@ -42,37 +42,33 @@ internal class DrinkController
     {
         using var connection = new SqlConnection(connectionString);
 
-        var sql = @"IF EXISTS (SELECT * FROM ViewedDrinks WHERE DrinkName = @drinkName
+        var sql = @"IF EXISTS (SELECT * FROM ViewedDrinks WHERE DrinkName = @DrinkName)
         BEGIN 
             UPDATE ViewedDrinks
             SET Counter += 1
-            WHERE DrinkName = @drinkName
+            WHERE DrinkName = @DrinkName
         END
         ELSE
         BEGIN
-            INSERT INTO ViewedDrinks(DrinkName) VALUES (@DrinkName)
+            INSERT INTO ViewedDrinks(DrinkName, Counter) VALUES (@DrinkName, @Counter)
         END;";
 
-        return connection.Execute(sql, new DTODrinkViewed(drinkName));
+        int row = connection.Execute(sql, new DTODrinkViewed()
+        {
+            DrinkName = drinkName,
+            Counter = 0,
+        });
 
-//IF EXISTS(SELECT 1 FROM YourTable WHERE YourCondition)
-//BEGIN
-//    -- Code to execute if the record exists
-//    SELECT 'Record exists' AS Status;
-//        END
-//        ELSE
-//        BEGIN
-//            -- Code to execute if the record does not exist
-//    SELECT 'Record does not exist' AS Status;
-//        END
-
+        return row;
     }
+
+
 
     internal List<DTODrinkViewed>? GetViewedDrinks()
     {
         using var connection = new SqlConnection(connectionString);
 
-        var sql = "SELECT * FROM ViewedDrinks;";
+        var sql = "SELECT * FROM ViewedDrinks ORDER BY Counter DESC;";
 
         return connection.Query<DTODrinkViewed>(sql).ToList();
     }
