@@ -47,7 +47,7 @@ internal class UserInput
         }
     }
 
-    private void ShowViewedDrinks()
+    internal void ShowViewedDrinks()
     {
         var list = drinkController.GetViewedDrinks();
 
@@ -58,15 +58,7 @@ internal class UserInput
             return;
         }
 
-        var table = new Table();
-        table.Title("Most viewed drinks");
-        table.AddColumns("Name", "Counter");
-        foreach (var drink in list)
-        {
-            table.AddRow(drink.DrinkName, drink.Counter.ToString());
-        }
-
-        AnsiConsole.Write(table);
+        TableVisualisation.PrintViewedDrinks(list);
 
         Console.WriteLine("Press any key to go back");
         Console.ReadKey();

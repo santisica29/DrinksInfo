@@ -52,4 +52,17 @@ internal static class TableVisualisation
 
         AnsiConsole.Write(table);
     }
+
+    internal static void PrintViewedDrinks(List<DTODrinkViewed> list)
+    {
+        var table = new Table();
+        table.Title("Most viewed drinks");
+        table.AddColumns("Name", "Counter");
+        foreach (var drink in list)
+        {
+            table.AddRow(drink.DrinkName, drink.Counter.ToString());
+        }
+
+        AnsiConsole.Write(table);
+    }
 }
